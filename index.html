@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carrossel com Vídeo</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .carousel,
+      .carousel-item,
+      .carousel-inner {
+        height: 100vh;
+      }
+      .carousel-item {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Estilo do botão redondo com imagem de logotipo transparente */
+      .fullscreen-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-image: url("online-advertising.png"); /* Substitua 'logo.png' pelo caminho da imagem desejada */
+        background-size: cover;
+        background-position: center;
+        border: none;
+        cursor: pointer;
+        outline: none;
+      }
+
+      .fullscreen-btn:hover {
+        opacity: 0.8; /* Efeito de hover */
+        border: none;
+      }
+
+      .fullscreen-btn:focus {
+        outline: none; /* Remove a borda ao clicar */
+      }
+
+      .carousel-control-prev,
+      .carousel-control-next {
+        opacity: 0; /* Torna os controles invisíveis */
+        pointer-events: none; /* Impede interação com o mouse */
+      }
+
+      .carousel-control-prev:hover,
+      .carousel-control-next:hover {
+        opacity: 1; /* Mostra os controles ao passar o mouse por cima */
+        pointer-events: auto; /* Permite interação ao passar o mouse */
+      }
+
+      .carousel-indicators {
+        opacity: 0; /* Torna os indicadores invisíveis */
+        pointer-events: none; /* Impede a interação */
+      }
+
+      .carousel-indicators .carousel:hover {
+        opacity: 1; /* Mostra os indicadores ao passar o mouse */
+        pointer-events: auto; /* Permite a interação */
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="bannerCarrossel"
+      class="carousel slide"
+      data-ride="carousel"
+      data-interval="false"
+    >
+      <button class="fullscreen-btn" onclick="enterFullscreen()"></button>
+      <ol class="carousel-indicators">
+        <li
+          data-target="#bannerCarrossel"
+          data-slide-to="0"
+          class="active"
+        ></li>
+        <li data-target="#bannerCarrossel" data-slide-to="1"></li>
+        <li data-target="#bannerCarrossel" data-slide-to="2"></li>
+      </ol>
+
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <video id="video1" muted>
+            <source src="video_01.mp4" type="video/mp4" />
+            Seu navegador não suporta vídeos HTML5.
+          </video>
+        </div>
+        <div
+          class="carousel-item"
+          style="background-image: url('banner1.jpg')"
+        ></div>
+        <div
+          class="carousel-item"
+          style="background-image: url('banner3.jpg')"
+        ></div>
+      </div>
+
+      <a
+        class="carousel-control-prev"
+        href="#bannerCarrossel"
+        role="button"
+        data-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Anterior</span>
+      </a>
+      <a
+        class="carousel-control-next"
+        href="#bannerCarrossel"
+        role="button"
+        data-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Próximo</span>
+      </a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      function handleSlideChange() {
+        var activeSlide = document.querySelector(".carousel-item.active");
+
+        var video = activeSlide.querySelector("video");
+        if (video) {
+          video.currentTime = 0;
+          video.play();
+          video.addEventListener("ended", function () {
+            $("#bannerCarrossel").carousel("next");
+          });
+        } else {
+          setTimeout(function () {
+            $("#bannerCarrossel").carousel("next");
+          }, 5000);
+        }
+      }
+
+      handleSlideChange();
+
+      $("#bannerCarrossel").on("slid.bs.carousel", function () {
+        handleSlideChange();
+      });
+
+      function enterFullscreen() {
+        var carouselElement = document.getElementById("bannerCarrossel");
+        if (carouselElement.requestFullscreen) {
+          carouselElement.requestFullscreen();
+        } else if (carouselElement.mozRequestFullScreen) {
+          carouselElement.mozRequestFullScreen();
+        } else if (carouselElement.webkitRequestFullscreen) {
+          carouselElement.webkitRequestFullscreen();
+        } else if (carouselElement.msRequestFullscreen) {
+          carouselElement.msRequestFullscreen();
+        }
+      }
+    </script>
+  </body>
+</html>
